@@ -1,0 +1,15 @@
+.album {
+  display: flex;
+  flex-direction: column;
+  row-gap: 7px;
+  cursor: pointer;
+}
+
+.album img {
+  width: 124px;
+}
+
+.album span {
+  color: var(--color-white);
+  font-size: 11px;
+}

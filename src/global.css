@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;700&display=swap');
+
 :root {
   --color-black-900: #1b1b1b;
   --color-black-700: #262626;
@@ -17,6 +19,7 @@
 
 html {
   font-size: 16px;
+  font-family: 'Nunito', sans-serif;
 }
 
 html,
@@ -36,7 +39,10 @@ img {
   height: 100lvh;
   max-width: 450px;
   margin: 0 auto;
+  padding-left: 1rem;
+  padding-top: 2rem;
   background-color: var(--color-black-900);
+  color: var(--color-white);
 }
 
 .menu {

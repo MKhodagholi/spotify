@@ -1,0 +1,14 @@
+.playlist {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.playlist h3 {
+  font-weight: 700;
+}
+
+.albums-div {
+  display: flex;
+  column-gap: 16px;
+}
