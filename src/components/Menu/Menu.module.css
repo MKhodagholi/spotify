@@ -1,4 +1,14 @@
 .item {
   display: flex;
+  align-items: center;
   flex-direction: column;
+  row-gap: 6px;
+  width: 33%;
+  color: var(--color-gray-300);
+  cursor: pointer;
+  color: var(--color-gray-200);
+}
+
+.active {
+  color: var(--color-white);
 }

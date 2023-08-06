@@ -1,4 +1,4 @@
-const Link = (element: HTMLElement, to: string) => {
+const Link = <T extends HTMLElement>(element: T, to: string) => {
   const clickHandler = () => {
     window.history.pushState('', '', to)
   }
