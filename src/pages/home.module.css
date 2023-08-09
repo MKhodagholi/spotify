@@ -1,4 +1,5 @@
 .playlist {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -8,6 +9,8 @@
 }
 
 .playlist h3 {
+  position: sticky;
+  left: 0;
   font-weight: 700;
 }
 

@@ -7,7 +7,6 @@ const pageElement: HTMLDivElement = document.querySelector('#page')!
 const renderPage = () => {
   pageElement.innerHTML = ''
   const nodePages = Router()
-  console.log('hello')
 
   nodePages.map(node => pageElement.appendChild(node))
 }

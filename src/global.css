@@ -68,6 +68,10 @@ img {
   width: 0;
 }
 
+::-webkit-scrollbar:horizontal {
+  height: 4px;
+}
+
 ::-webkit-scrollbar-thumb {
   background-color: #817e7e;
   border-radius: 12px;
