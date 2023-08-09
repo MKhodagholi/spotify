@@ -69,7 +69,7 @@ function createMenu() {
     {
       id: '2',
       label: 'Search',
-      link: 'search',
+      link: '/search',
       value: 'search',
       icon: searchIcon,
       activeIcon: searchIconIcon,
@@ -78,7 +78,7 @@ function createMenu() {
     {
       id: '3',
       label: 'Your Library',
-      link: 'library',
+      link: '/library',
       value: 'library',
       icon: libraryIcon,
       activeIcon: libraryIconIcon,
