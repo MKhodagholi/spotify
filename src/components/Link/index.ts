@@ -5,6 +5,8 @@ const Link = <T extends HTMLElement>(element: T, to: string) => {
 
   element.addEventListener('click', clickHandler)
 
+  window.dispatchEvent(new Event('locationchange'))
+
   return element
 }
 

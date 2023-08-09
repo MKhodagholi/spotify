@@ -1,14 +1,26 @@
 .playlist {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow-x: auto;
   row-gap: 20px;
+  margin-right: 2rem;
 }
 
 .playlist h3 {
   font-weight: 700;
 }
 
+.playlist.big-images img {
+  width: 166px;
+}
+
+.playlist.small-images img {
+  width: 124px;
+}
+
 .albums-div {
   display: flex;
   column-gap: 16px;
+  padding-bottom: 1rem;
 }

@@ -1,30 +1,55 @@
-import Album from '../class/Album'
+import Album, { Track } from '../class/Album'
 import styles from './home.module.css'
+import data from '../data/data.json'
 
-interface IMusicAlbum {
-  id: string
-  label: string
-  image: string
+const getValidData = () => {
+  return data.filter(item => !!item.album.album_name)
 }
 
-const HomePage = () => {
-  const recentlyPlayedElement = document.createElement('div')
+const getDataOfMadeForYou = () => {
+  const validData = getValidData()
 
-  const recentlyPlayedItems = []
+  const albums: Array<Album> = validData.map(albumObj => {
+    const { id, album_name, album_composer, album_genre, album_thumb } =
+      albumObj.album
 
-  const album1 = new Album({
-    name: 'Emotion',
-    id: '114701',
-    composer: 'Frozen Silence',
-    genre: 'Classical Crossover',
-    thumb:
-      'https://vmusic.ir/wp-content/uploads/2022/02/Frozen-Silence-Emotion-2022-225x225.jpg',
-    tracks: [],
+    const tracks: Array<Track> = albumObj.musics.map(music => {
+      const { id, track_name, track_thumb, track_time, track_url } = music
+      const track: Track = {
+        id: String(id),
+        name: track_name,
+        thumb: track_thumb,
+        time: track_time,
+        url: track_url,
+      }
+      return track
+    })
+
+    const album = new Album({
+      id: String(id),
+      name: album_name,
+      composer: album_composer,
+      genre: album_genre,
+      thumb: album_thumb,
+      tracks,
+    })
+
+    return album
   })
 
+  return albums
+}
+
+const getDataOfRecentlyPlayed = () => {
+  const data: [] = []
+
+  return data
+}
+
+const createMadeForYouElement = (albums: Array<Album>) => {
   const madeForYouElement = document.createElement('div')
 
-  madeForYouElement.classList.add(styles.playlist)
+  madeForYouElement.classList.add(styles.playlist, styles['big-images'])
 
   madeForYouElement.innerHTML = `<h3>Made For You</h3>`
 
@@ -32,17 +57,39 @@ const HomePage = () => {
 
   albumsDiv.classList.add(styles['albums-div'])
 
-  const madeForYouItems = [
-    album1.createElement(),
-    album1.createElement(),
-    album1.createElement(),
-  ]
-
-  madeForYouItems.forEach(item => albumsDiv.appendChild(item))
+  albums.forEach(album => albumsDiv.appendChild(album.createElement()))
 
   madeForYouElement.appendChild(albumsDiv)
 
   return madeForYouElement
+}
+
+const createRecentlyPlayedElement = (albums: Array<Album>) => {
+  const recentlyPlayedElement = document.createElement('div')
+
+  recentlyPlayedElement.classList.add(styles.playlist, styles['small-images'])
+
+  recentlyPlayedElement.innerHTML = `<h3>Recently Played</h3>`
+
+  const albumsDiv = document.createElement('div')
+
+  albumsDiv.classList.add(styles['albums-div'])
+
+  albums.forEach(album => albumsDiv.appendChild(album.createElement()))
+
+  recentlyPlayedElement.appendChild(albumsDiv)
+
+  return recentlyPlayedElement
+}
+
+const HomePage = () => {
+  const madeForYouAlbumsData = getDataOfMadeForYou()
+  const madeForYouElement = createMadeForYouElement(madeForYouAlbumsData)
+
+  const recentlyPlayedData = getDataOfRecentlyPlayed()
+  const recentlyPlayedElement = createRecentlyPlayedElement(recentlyPlayedData)
+
+  return [recentlyPlayedElement, madeForYouElement]
 }
 
 export default HomePage

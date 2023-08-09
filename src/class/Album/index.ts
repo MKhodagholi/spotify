@@ -1,6 +1,6 @@
 import styles from './Album.module.css'
 
-interface Track {
+export interface Track {
   id: string
   name: string
   time: string
@@ -51,7 +51,7 @@ class Album implements IAlbum {
 
   clickHandler(element: HTMLElement) {
     element.addEventListener('click', () => {
-      window.history.pushState('hello world', '', `/album/${this.id}`)
+      window.history.pushState({}, '', `/album/${this.id}`)
     })
   }
 }
