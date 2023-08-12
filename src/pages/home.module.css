@@ -5,7 +5,8 @@
   width: 100%;
   overflow-x: auto;
   row-gap: 20px;
-  margin-right: 2rem;
+  padding-right: 2rem;
+  margin-left: var(--margin-left-page);
 }
 
 .playlist h3 {

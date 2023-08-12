@@ -1,0 +1,23 @@
+.track-name {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.track-donload-info {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  margin-top: 2px;
+}
+
+.track-donload-info img {
+  width: 13px;
+  height: 13px;
+}
+
+.track-donload-info span {
+  color: var(--color-gray-350);
+  font-size: 11px;
+}

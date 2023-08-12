@@ -1,3 +1,4 @@
+import Link from '../../components/Link'
 import styles from './Album.module.css'
 
 export interface Track {
@@ -6,6 +7,7 @@ export interface Track {
   time: string
   url: string
   thumb: string
+  composerName: string
 }
 
 interface IAlbum {
@@ -38,21 +40,15 @@ class Album implements IAlbum {
   createElement() {
     const { name, thumb } = this
 
-    const element = document.createElement('div')
+    let element = document.createElement('div')
 
     element.classList.add(styles.album)
 
     element.innerHTML = `<img src=${thumb} /><span>${name}</span>`
 
-    this.clickHandler(element)
+    element = Link(element, `/album/${this.id}`)
 
     return element
-  }
-
-  clickHandler(element: HTMLElement) {
-    element.addEventListener('click', () => {
-      window.history.pushState({}, '', `/album/${this.id}`)
-    })
   }
 }
 
