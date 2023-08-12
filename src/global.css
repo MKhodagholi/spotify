@@ -36,14 +36,13 @@ body {
 
 img {
   user-select: none;
-  pointer-events: none;
 }
 
 #app {
   position: relative;
   width: 100%;
   height: var(--size-height-full);
-  max-width: 500px;
+  max-width: 460px;
   margin: 0 auto;
   padding-top: 2rem;
   background-color: var(--color-black-900);
@@ -70,6 +69,11 @@ img {
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 80px;
+}
+
+.page.full {
+  max-height: 100lvh;
+  padding-bottom: 0;
 }
 
 /* custom scroll */

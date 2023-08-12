@@ -1,17 +1,12 @@
 import AlbumPage from '../pages/album'
 import HomePage from '../pages/home'
 import NotFoundPage from '../pages/not-found'
+import SongPage from '../pages/song'
+import { removeAllAudio } from '../lib/removeAllAudio'
 
-// interface IRoute {
-//   pathname: string
-//   element: HTMLElement
-//   children: Array<IRoute> | null
-// }
+const pageElement: HTMLDivElement = document.querySelector('#page')!
 
-// export const routes: Array<IRoute> = [
-//   { pathname: '/', element: document.createElement('div'), children: null },
-//   { pathname: '/album', element: document.createElement('div'), children: [] },
-// ]
+const menuElement = document.getElementById('menu')!
 
 export const navigate = (to: string) => {
   window.history.pushState('', '', to)
@@ -21,15 +16,30 @@ export const navigate = (to: string) => {
 export function Router(): Array<HTMLElement> {
   const path = window.location.pathname
 
-  const isAlbumPage = path.split('/', 3)[1] === 'album'
+  const pathArray = path.split('/', 4)
+
+  const isAlbumPage = pathArray.length === 3 && pathArray[1] === 'album'
+  const isSongPage = pathArray.length === 4 && pathArray[1] === 'album'
+
+  removeAllAudio()
 
   let nodeArrays
+
+  menuElement.classList.add('menu')
+  pageElement.classList.remove('full')
 
   if (path === '/') {
     nodeArrays = HomePage()
   } else if (isAlbumPage) {
-    const albumId = path.split('/', 3)[2]
+    const albumId = pathArray[2]
     nodeArrays = AlbumPage(albumId)
+  } else if (isSongPage) {
+    pageElement.classList.add('full')
+    menuElement.innerHTML = ''
+    menuElement.classList.remove('menu')
+    const albumId = pathArray[2]
+    const songId = pathArray[3]
+    nodeArrays = SongPage(albumId, songId)
   } else {
     nodeArrays = NotFoundPage()
   }

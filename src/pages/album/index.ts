@@ -5,10 +5,11 @@ import likeIcon from '../../assets/icons/like_icon.svg'
 import likeActiveIcon from '../../assets/icons/like-active_icon.svg'
 import downloadIcon from '../../assets/icons/download_icon.svg'
 import playIcon from '../../assets/icons/play_icon.svg'
+import pauseIcon from '../../assets/icons/pause-white_icon.svg'
 import shuffleIcon from '../../assets/icons/shuffle_icon.svg'
-import MusicList, { TrackItem } from '../../components/MusicList'
+import MusicList from '../../components/MusicList'
 import { Track } from '../../class/Album'
-import audio from '../../lib/audio'
+import useAudio from '../../hooks/useAudio'
 
 /* 
 <div className=${styles['album-like-download']}>
@@ -48,28 +49,34 @@ const getDownloadLikeDivElement = (
   </div>
 </div>
 */
-const getPlayDivElement = (onPlay: () => void, onShuffle: () => void) => {
-  const playIconDivElement = document.createElement('div')
-  playIconDivElement.classList.add(styles['play-icon-div'])
+const getPlayDivElement = (): [
+  HTMLDivElement,
+  HTMLImageElement,
+  HTMLImageElement,
+] => {
+  const playDivElement = document.createElement('div')
+  playDivElement.classList.add(styles['play-div'])
 
+  const playElement = document.createElement('div')
+  playElement.classList.add(styles['play-icon-div'])
   const playIconElement = document.createElement('img')
   playIconElement.setAttribute('src', playIcon)
-  playIconElement.addEventListener('click', () => {})
 
-  playIconDivElement.appendChild(playIconElement)
+  playElement.appendChild(playIconElement)
+
+  playDivElement.appendChild(playElement)
 
   const suffleIconDivElement = document.createElement('div')
   suffleIconDivElement.classList.add(styles['shuffle-icon-div'])
 
   const suffleIconElement = document.createElement('img')
   suffleIconElement.setAttribute('src', shuffleIcon)
-  suffleIconElement.addEventListener('click', onShuffle)
 
   suffleIconDivElement.appendChild(suffleIconElement)
 
-  playIconDivElement.appendChild(suffleIconDivElement)
+  playDivElement.appendChild(suffleIconDivElement)
 
-  return playIconDivElement
+  return [playDivElement, playIconElement, suffleIconElement]
 }
 
 const AlbumPage = (albumId: string) => {
@@ -81,24 +88,14 @@ const AlbumPage = (albumId: string) => {
 
   const albumPublishYear = 2018 + (+album.id % 5)
 
-  let isPlay = false
-  let isShuffleMode = false
-
-  const songList = musics.map(item => item.track_url)
+  const songList = musics.map(item => ({
+    id: String(item.id),
+    url: item.track_url,
+    name: item.track_name,
+  }))
 
   const downloadIconClickHandler = () => {}
   const likeIconClickHandler = () => {}
-  const playClickHandler = () => {
-    console.log('its clicked')
-    isPlay = !isPlay
-    audioElement.play()
-  }
-  const shuffleClickHandler = () => {
-    isShuffleMode = !isShuffleMode
-    console.log('hello')
-  }
-
-  const audioElement = audio(songList, isPlay, isShuffleMode)
 
   albumPageElement.innerHTML = `<div class=${styles['album-page-content']}>
   <div class=${styles['thumb-img']}>
@@ -127,12 +124,28 @@ const AlbumPage = (albumId: string) => {
 
   albumActionsDivElement.appendChild(downloadLikeElement)
 
-  const playIconDivElement = getPlayDivElement(
-    playClickHandler,
-    shuffleClickHandler,
-  )
+  const [playElement, playIconElement, shuffleElement] = getPlayDivElement()
 
-  albumActionsDivElement.appendChild(playIconDivElement)
+  let trackTitleElement = document.createElement('p')
+
+  trackTitleElement.onchange = () => {
+    console.log(trackTitleElement.innerText)
+  }
+
+  const playClickHandler = (isPlay: boolean) => {
+    if (isPlay) playIconElement.src = pauseIcon
+    else playIconElement.src = playIcon
+  }
+
+  useAudio({
+    musicList: songList,
+    playElement,
+    onPlay: playClickHandler,
+    shuffleElement,
+    trackTitleElement,
+  })
+
+  albumActionsDivElement.appendChild(playElement)
 
   albumActionsWithDateElement.appendChild(albumActionsDivElement)
 

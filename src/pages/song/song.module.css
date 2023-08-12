@@ -1,0 +1,63 @@
+.song-page {
+  padding: 0 24px;
+}
+
+.thumb {
+  width: 100%;
+}
+
+.song-info-div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.song-info-div p {
+  margin-bottom: 6px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.song-info-div span {
+  color: #bbbbba;
+  font-size: 15px;
+}
+
+.input-range {
+  width: 100%;
+  margin-top: 17px;
+}
+
+.song-time-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.song-time-div span {
+  font-size: 11px;
+  color: #bababa;
+  margin-top: -5px;
+}
+
+.song-controller {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 17px;
+}
+
+.song-controller img {
+  cursor: pointer;
+}
+
+.pause-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 63px;
+  height: 63px;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}

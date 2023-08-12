@@ -9,6 +9,18 @@ const getAlbumDataWithId = (id: string) => {
   return getValidData().filter(item => item.album.id === id)[0]
 }
 
+const getSongDataWithId = (albumId: string, songId: string) => {
+  const album = getAlbumDataWithId(albumId)
+  let songSelected = album.musics.filter(item => +item.id === +songId)[0]
+
+  const songWithComposerName = {
+    ...songSelected,
+    componserName: album.album.album_composer,
+  }
+
+  return songWithComposerName
+}
+
 const getDataOfMadeForYou = () => {
   const validData = getValidData()
 
@@ -24,6 +36,7 @@ const getDataOfMadeForYou = () => {
         thumb: track_thumb,
         time: track_time,
         url: track_url,
+        composerName: album_composer,
       }
       return track
     })
@@ -49,4 +62,9 @@ const getDataOfRecentlyPlayed = () => {
   return data
 }
 
-export { getAlbumDataWithId, getDataOfMadeForYou, getDataOfRecentlyPlayed }
+export {
+  getAlbumDataWithId,
+  getSongDataWithId,
+  getDataOfMadeForYou,
+  getDataOfRecentlyPlayed,
+}
