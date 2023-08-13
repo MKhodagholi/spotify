@@ -98,12 +98,14 @@ const useAudio = (data: {
   }
 
   const previewTrackHandler = () => {
-    currentSongIndex--
+    let previewSognIndex = currentSongIndex - 1
 
-    if (currentSongIndex < 0) currentSongIndex = 0
+    if (previewSognIndex < 0) previewSognIndex = 0
+
+    currentSongIndex = previewSognIndex
 
     setAudioSrc(
-      musicList[currentSongIndex],
+      musicList[previewSognIndex],
       audioElement,
       trackTitleElement,
       isPlay,
@@ -136,7 +138,7 @@ const useAudio = (data: {
 
     currentSongIndex = nextSongIndex
     setAudioSrc(
-      musicList[currentSongIndex],
+      musicList[nextSongIndex],
       audioElement,
       trackTitleElement,
       isPlay,

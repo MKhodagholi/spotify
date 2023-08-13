@@ -27,7 +27,7 @@ const SongPage = (albumId: string, songId: string) => {
   songPageElement.classList.add(styles['song-page'])
 
   const imgThumbElement = document.createElement('img')
-  // imgThumbElement.src = song.track_thumb
+  imgThumbElement.src = song.track_thumb
   imgThumbElement.classList.add(styles.thumb)
 
   songPageElement.appendChild(imgThumbElement)
