@@ -8,9 +8,7 @@ enum TAB_NAMES {
   PLAYLISTS = 'playlists',
 }
 
-const renderLibraryPageContent = (tabElement: HTMLElement) => {
-  const tabName = tabElement.textContent?.toLowerCase()!
-
+const renderLibraryPageContent = (tabName: string) => {
   if (tabName === TAB_NAMES.PLAYLISTS) {
     return ''
   } else if (tabName === TAB_NAMES.ARTISTS) {
@@ -41,7 +39,7 @@ const LibraryPage = () => {
   const searchElement = document.createElement('div')
   searchElement.classList.add(styles['search-div'])
 
-  searchElement.innerHTML = `<img src=${searchIcon} /><input placeholder="Find in artists" />`
+  searchElement.innerHTML = `<img src=${searchIcon} /><input placeholder="Find in artists" id="search" />`
 
   const filterElement = document.createElement('div')
   filterElement.classList.add(styles.filter)
@@ -52,11 +50,17 @@ const LibraryPage = () => {
 
   const libraryContentElement = document.createElement('div')
 
-  const libraryTabClickHandler = (tabName: HTMLElement) => {
+  const libraryTabClickHandler = (tabElement: HTMLElement) => {
+    const tabName = tabElement.textContent!
+
+    const searchElement: HTMLInputElement = document.getElementById(
+      'search',
+    )! as HTMLInputElement
+    searchElement.placeholder = `Find in ${tabName}`
     for (const child of tabsElement.children) {
       child.classList.remove(styles.active)
     }
-    tabName.classList.add(styles.active)
+    tabElement.classList.add(styles.active)
     renderLibraryPageContent(tabName)
   }
 
