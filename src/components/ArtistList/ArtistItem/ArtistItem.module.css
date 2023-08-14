@@ -1,0 +1,12 @@
+.artist-item {
+  display: flex;
+  align-items: center;
+  column-gap: 11px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.artist-item p {
+  font-size: 15px;
+  font-weight: 500;
+}

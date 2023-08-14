@@ -1,6 +1,7 @@
 import styles from './library.module.css'
 
 import searchIcon from '../../assets/icons/search_icon.svg'
+import ArtistsContent from './ui/ArtistsContent'
 
 enum TAB_NAMES {
   ARTISTS = 'artists',
@@ -8,11 +9,14 @@ enum TAB_NAMES {
   PLAYLISTS = 'playlists',
 }
 
-const renderLibraryPageContent = (tabName: string) => {
+const renderLibraryPageContent = (
+  tabName: string,
+  contentElement: HTMLElement,
+) => {
   if (tabName === TAB_NAMES.PLAYLISTS) {
-    return ''
+    // contentElement =
   } else if (tabName === TAB_NAMES.ARTISTS) {
-    return ''
+    contentElement.appendChild(ArtistsContent())
   } else if (tabName === TAB_NAMES.ALBUMS) {
     return ''
   } else {
@@ -51,17 +55,18 @@ const LibraryPage = () => {
   const libraryContentElement = document.createElement('div')
 
   const libraryTabClickHandler = (tabElement: HTMLElement) => {
-    const tabName = tabElement.textContent!
+    const tabName = tabElement.textContent?.toLocaleLowerCase()!
 
     const searchElement: HTMLInputElement = document.getElementById(
       'search',
     )! as HTMLInputElement
     searchElement.placeholder = `Find in ${tabName}`
+
     for (const child of tabsElement.children) {
       child.classList.remove(styles.active)
     }
     tabElement.classList.add(styles.active)
-    renderLibraryPageContent(tabName)
+    renderLibraryPageContent(tabName, libraryContentElement)
   }
 
   for (const child of tabsElement.children) {
@@ -75,6 +80,8 @@ const LibraryPage = () => {
   libraryPageElement.appendChild(tabsElement)
 
   libraryPageElement.appendChild(toolsElement)
+
+  libraryPageElement.appendChild(libraryContentElement)
 
   return libraryPageElement
 }
