@@ -1,18 +1,18 @@
 import styles from './ArtistItem.module.css'
 
-import artistPlaceholderImage from '../../../assets/images/artist-placeholder_image.svg'
 import Link from '../../Link'
 
 export interface IArtistItem {
   name: string
+  image: string
 }
 
 const ArtistItem = (item: IArtistItem) => {
-  const { name } = item
+  const { name, image } = item
   let artistElement = document.createElement('div')
   artistElement.classList.add(styles['artist-item'])
 
-  artistElement.innerHTML = `<img src=${artistPlaceholderImage} /><p>${name}</p>`
+  artistElement.innerHTML = `<img src=${image} /><p>${name}</p>`
 
   artistElement = Link(artistElement, `/artists/${name}`)
 

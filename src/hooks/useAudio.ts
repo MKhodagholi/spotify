@@ -19,11 +19,11 @@ const setAudioSrc = async (
   trackTitleElement: HTMLElement,
   isPlay: boolean,
 ) => {
-  const savedAudio = getAudioFromIndexDB(trackObj.id)
-
   trackTitleElement.innerText = trackObj.name
 
   await timeout(300)
+
+  const savedAudio = getAudioFromIndexDB(trackObj.id)
 
   if (savedAudio) {
     audioElement.src = savedAudio

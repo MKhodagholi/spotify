@@ -1,6 +1,14 @@
 import Album, { Track } from '../class/Album'
 import { IAlbumItem } from '../components/AlbumList/AlbumItem'
+import { IArtistItem } from '../components/ArtistList/ArtistItem'
 import data from '../data/data.json'
+
+import artist1Image from '../assets/images/artist-1_image.svg'
+import artist2Image from '../assets/images/artist-2_image.svg'
+import artist3Image from '../assets/images/artist-3_image.svg'
+import artist4Image from '../assets/images/artist-4_image.svg'
+import artist5Image from '../assets/images/artist-5_image.svg'
+import artist6Image from '../assets/images/artist-6_image.svg'
 
 const getValidData = () => {
   return data.filter(item => !!item.album.album_name)
@@ -22,9 +30,50 @@ const getAlbumsData = () => {
     return albumDataObj
   })
 
-  console.log(albumsData)
-
   return albumsData
+}
+
+const getArtistsData = () => {
+  const validData = getValidData()
+
+  const artistsData: Array<IArtistItem> = validData.map((item, index) => {
+    const artistData = item.album
+
+    let artistImage = artist1Image
+
+    switch ((index + 1) % 6) {
+      case 0:
+        artistImage = artist6Image
+        break
+      case 1:
+        artistImage = artist1Image
+        break
+      case 2:
+        artistImage = artist2Image
+        break
+      case 3:
+        artistImage = artist3Image
+        break
+      case 4:
+        artistImage = artist4Image
+        break
+      case 5:
+        artistImage = artist5Image
+        break
+      default:
+        artistImage = artist1Image
+        break
+    }
+
+    const artistDataObj: IArtistItem = {
+      name: artistData.album_composer,
+      image: artistImage,
+    }
+
+    return artistDataObj
+  })
+
+  return artistsData
 }
 
 const getAlbumDataWithId = (id: string) => {
@@ -86,6 +135,7 @@ const getDataOfRecentlyPlayed = () => {
 
 export {
   getAlbumsData,
+  getArtistsData,
   getAlbumDataWithId,
   getSongDataWithId,
   getDataOfMadeForYou,
