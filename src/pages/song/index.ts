@@ -47,17 +47,36 @@ const SongPage = (albumId: string, songId: string) => {
 
   songPageElement.appendChild(songInfoElement)
 
-  const inputRangeElement = document.createElement('input')
-  inputRangeElement.classList.add(styles['input-range'])
-  inputRangeElement.type = 'range'
+  const trackElement = document.createElement('div')
+  trackElement.classList.add(styles.track)
+  const timerElement = document.createElement('input')
+  timerElement.classList.add(styles['input-range'])
+  timerElement.value = '0'
+  timerElement.type = 'range'
+  timerElement.step = '1'
 
-  songPageElement.appendChild(inputRangeElement)
+  const thumbTimerElement = document.createElement('div')
+  thumbTimerElement.classList.add(styles['timer-thumb'])
+
+  const animateTrackElement = document.createElement('div')
+  animateTrackElement.classList.add(styles['animate-track'])
+
+  trackElement.appendChild(timerElement)
+  trackElement.appendChild(thumbTimerElement)
+  trackElement.appendChild(animateTrackElement)
+
+  songPageElement.appendChild(trackElement)
 
   const songTimeDivElement = document.createElement('div')
   songTimeDivElement.classList.add(styles['song-time-div'])
-  songTimeDivElement.innerHTML = `<span>${'0.00'}</span><span>${
-    song.track_time
-  }</span>`
+
+  const songTimeStartElement = document.createElement('span')
+  songTimeStartElement.textContent = '00:00'
+  const songTimeEndElemenet = document.createElement('span')
+  songTimeEndElemenet.textContent = song.track_time
+
+  songTimeDivElement.appendChild(songTimeStartElement)
+  songTimeDivElement.appendChild(songTimeEndElemenet)
 
   songPageElement.appendChild(songTimeDivElement)
 
@@ -109,6 +128,11 @@ const SongPage = (albumId: string, songId: string) => {
     onPlay: playClickHandler,
     onShuffle: shuffleClickHandler,
     onRepeat: repeatClickHandler,
+    timerElement,
+    startTimerElement: songTimeStartElement,
+    endTimerElement: songTimeEndElemenet,
+    animateTrackElement,
+    thumbTimerElement,
   })
 
   songControllerElement.appendChild(shuffleElement)

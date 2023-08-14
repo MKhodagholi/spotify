@@ -1,3 +1,5 @@
+import { getMinuteAudio, getSecondAudio } from '../lib/audio'
+
 const getAudioFromIndexDB = (songId: string) => {
   const audio = undefined
 
@@ -18,6 +20,8 @@ const setAudioSrc = async (
   audioElement: HTMLAudioElement,
   trackTitleElement: HTMLElement,
   isPlay: boolean,
+  endTimeAudioElement?: HTMLElement,
+  timerElement?: HTMLInputElement,
 ) => {
   trackTitleElement.innerText = trackObj.name
 
@@ -31,6 +35,22 @@ const setAudioSrc = async (
     audioElement.src = trackObj.url
   }
 
+  audioElement.onloadedmetadata = function () {
+    const duration = audioElement.duration
+
+    if (timerElement) {
+      timerElement.min = '0'
+      timerElement.max = String(duration)
+    }
+
+    if (endTimeAudioElement) {
+      const minuteAudio = getMinuteAudio(duration)
+      const secondAudio = getSecondAudio(duration)
+
+      endTimeAudioElement.innerText = `${minuteAudio}:${secondAudio}`
+    }
+  }
+
   if (isPlay) audioElement.play()
 }
 
@@ -42,6 +62,11 @@ const useAudio = (data: {
   nextTrackElement?: HTMLElement
   previewTrackElement?: HTMLElement
   repeatElement?: HTMLElement
+  timerElement?: HTMLInputElement
+  startTimerElement?: HTMLElement
+  endTimerElement?: HTMLElement
+  animateTrackElement?: HTMLElement
+  thumbTimerElement?: HTMLElement
   onPlay?: (isPlay: boolean) => void
   onShuffle?: (isShuffle: boolean) => void
   onRepeat?: (isRepeat: boolean) => void
@@ -64,6 +89,7 @@ const useAudio = (data: {
     audioElement,
     trackTitleElement,
     isPlay,
+    data?.endTimerElement,
   )
 
   const playPauseClickHandler = () => {
@@ -82,25 +108,23 @@ const useAudio = (data: {
       nextSongIndex = Math.floor(Math.random() * musicListNumbers)
     } else {
       nextSongIndex = currentSongIndex + 1
-
-      if (nextSongIndex === musicListNumbers)
-        nextSongIndex = musicListNumbers - 1
     }
 
-    currentSongIndex = nextSongIndex
+    currentSongIndex = nextSongIndex % (musicListNumbers - 1)
 
     setAudioSrc(
       musicList[nextSongIndex],
       audioElement,
       trackTitleElement,
       isPlay,
+      data?.endTimerElement,
     )
   }
 
   const previewTrackHandler = () => {
     let previewSognIndex = currentSongIndex - 1
 
-    if (previewSognIndex < 0) previewSognIndex = 0
+    if (previewSognIndex < 0) previewSognIndex += musicListNumbers - 1
 
     currentSongIndex = previewSognIndex
 
@@ -109,6 +133,7 @@ const useAudio = (data: {
       audioElement,
       trackTitleElement,
       isPlay,
+      data?.endTimerElement,
     )
   }
 
@@ -142,9 +167,45 @@ const useAudio = (data: {
       audioElement,
       trackTitleElement,
       isPlay,
+      data?.endTimerElement,
     )
 
     audioElement.play()
+  }
+
+  const timeupdateAudioHandler = e => {
+    const audio = e.target
+    const currentTime = audio.currentTime
+
+    const minuteAudio = getMinuteAudio(currentTime)
+    const secondAudio = getSecondAudio(currentTime)
+
+    if (data.animateTrackElement) {
+      data.animateTrackElement.style.width =
+        Math.floor((currentTime / audio.duration) * 100) + '%'
+    }
+
+    if (data.thumbTimerElement) {
+      data.thumbTimerElement.style.transform = `translateX(-${
+        Math.floor((currentTime / audio.duration) * 100) + '%'
+      })`
+      data.thumbTimerElement.style.left =
+        Math.floor((currentTime / audio.duration) * 100) + '%'
+    }
+
+    if (data.startTimerElement) {
+      data.startTimerElement.innerText = `${minuteAudio}:${secondAudio}`
+    }
+
+    if (data.timerElement) {
+      data.timerElement.value = currentTime
+    }
+  }
+
+  const timeChangeHandler = e => {
+    const value = e.target.value
+
+    audioElement.currentTime = value
   }
 
   data?.playElement?.addEventListener('click', playPauseClickHandler)
@@ -152,6 +213,10 @@ const useAudio = (data: {
   data?.previewTrackElement?.addEventListener('click', previewTrackHandler)
   data?.repeatElement?.addEventListener('click', repeatClickHandler)
   data?.shuffleElement?.addEventListener('click', shuffleClickHandler)
+
+  data?.timerElement?.addEventListener('change', timeChangeHandler)
+
+  audioElement.addEventListener('timeupdate', timeupdateAudioHandler)
 
   audioElement.addEventListener('ended', endedAudioHandler)
 
