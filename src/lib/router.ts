@@ -3,6 +3,7 @@ import HomePage from '../pages/home'
 import NotFoundPage from '../pages/not-found'
 import SongPage from '../pages/song'
 import { removeAllAudio } from '../lib/removeAllAudio'
+import LibraryPage from '../pages/library'
 
 const pageElement: HTMLDivElement = document.querySelector('#page')!
 
@@ -30,9 +31,14 @@ export function Router(): Array<HTMLElement> {
 
   if (path === '/') {
     nodeArrays = HomePage()
+  } else if (path === '/library') {
+    nodeArrays = LibraryPage()
   } else if (isAlbumPage) {
     const albumId = pathArray[2]
     nodeArrays = AlbumPage(albumId)
+    pageElement.classList.add('full')
+    menuElement.innerHTML = ''
+    menuElement.classList.remove('menu')
   } else if (isSongPage) {
     pageElement.classList.add('full')
     menuElement.innerHTML = ''
