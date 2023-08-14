@@ -46,7 +46,7 @@ const LibraryPage = () => {
   const searchElement = document.createElement('div')
   searchElement.classList.add(styles['search-div'])
 
-  searchElement.innerHTML = `<img src=${searchIcon} /><input placeholder="Find in artists" id="search" />`
+  searchElement.innerHTML = `<img src=${searchIcon} /><input placeholder="Find in playlists" id="search" />`
 
   const filterElement = document.createElement('div')
   filterElement.classList.add(styles.filter)
@@ -62,8 +62,8 @@ const LibraryPage = () => {
 
     const searchElement: HTMLInputElement = document.getElementById(
       'search',
-    )! as HTMLInputElement
-    searchElement.placeholder = `Find in ${tabName}`
+    ) as HTMLInputElement
+    if (searchElement) searchElement.placeholder = `Find in ${tabName}`
 
     for (const child of tabsElement.children) {
       child.classList.remove(styles.active)
@@ -85,6 +85,8 @@ const LibraryPage = () => {
   libraryPageElement.appendChild(toolsElement)
 
   libraryPageElement.appendChild(libraryContentElement)
+
+  libraryTabClickHandler(tabsElement.children[0] as HTMLElement)
 
   return libraryPageElement
 }
