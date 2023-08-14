@@ -42,7 +42,7 @@ img {
   position: relative;
   width: 100%;
   height: var(--size-height-full);
-  max-width: 460px;
+  max-width: 500px;
   margin: 0 auto;
   padding-top: 2rem;
   background-color: var(--color-black-900);
@@ -73,7 +73,7 @@ img {
 
 .page.full {
   max-height: 100lvh;
-  padding-bottom: 0;
+  margin-bottom: 10px;
 }
 
 /* custom scroll */

@@ -31,6 +31,9 @@ const LibraryPage = () => {
   const libraryPageElement = document.createElement('div')
   libraryPageElement.classList.add(styles['library-page'])
 
+  const staticDivElement = document.createElement('div')
+  staticDivElement.classList.add(styles['static-elements-div'])
+
   const headerTabsElement = document.createElement('div')
   headerTabsElement.classList.add(styles['header-tabs-div'])
   headerTabsElement.innerHTML = `<h2 class=${styles.active}>Music</h2><h2>Podcasts</h2>`
@@ -78,11 +81,13 @@ const LibraryPage = () => {
     })
   }
 
-  libraryPageElement.appendChild(headerTabsElement)
+  staticDivElement.appendChild(headerTabsElement)
 
-  libraryPageElement.appendChild(tabsElement)
+  staticDivElement.appendChild(tabsElement)
 
-  libraryPageElement.appendChild(toolsElement)
+  staticDivElement.appendChild(toolsElement)
+
+  libraryPageElement.appendChild(staticDivElement)
 
   libraryPageElement.appendChild(libraryContentElement)
 
