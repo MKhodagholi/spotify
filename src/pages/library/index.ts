@@ -3,6 +3,7 @@ import styles from './library.module.css'
 import searchIcon from '../../assets/icons/search_icon.svg'
 import ArtistsContent from './ui/ArtistsContent'
 import AlbumsContent from './ui/AlbumsContent'
+import PlaylistsContent from './ui/PlaylistsContent'
 
 enum TAB_NAMES {
   ARTISTS = 'artists',
@@ -16,7 +17,7 @@ const renderLibraryPageContent = (
 ) => {
   contentElement.innerHTML = ''
   if (tabName === TAB_NAMES.PLAYLISTS) {
-    // contentElement =
+    contentElement.appendChild(PlaylistsContent())
   } else if (tabName === TAB_NAMES.ARTISTS) {
     contentElement.appendChild(ArtistsContent())
   } else if (tabName === TAB_NAMES.ALBUMS) {
