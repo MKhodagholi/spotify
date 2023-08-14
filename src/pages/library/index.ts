@@ -2,6 +2,7 @@ import styles from './library.module.css'
 
 import searchIcon from '../../assets/icons/search_icon.svg'
 import ArtistsContent from './ui/ArtistsContent'
+import AlbumsContent from './ui/AlbumsContent'
 
 enum TAB_NAMES {
   ARTISTS = 'artists',
@@ -13,12 +14,13 @@ const renderLibraryPageContent = (
   tabName: string,
   contentElement: HTMLElement,
 ) => {
+  contentElement.innerHTML = ''
   if (tabName === TAB_NAMES.PLAYLISTS) {
     // contentElement =
   } else if (tabName === TAB_NAMES.ARTISTS) {
     contentElement.appendChild(ArtistsContent())
   } else if (tabName === TAB_NAMES.ALBUMS) {
-    return ''
+    contentElement.appendChild(AlbumsContent())
   } else {
     throw new Error('Invalid tab name.')
   }

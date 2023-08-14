@@ -1,8 +1,30 @@
 import Album, { Track } from '../class/Album'
+import { IAlbumItem } from '../components/AlbumList/AlbumItem'
 import data from '../data/data.json'
 
 const getValidData = () => {
   return data.filter(item => !!item.album.album_name)
+}
+
+const getAlbumsData = () => {
+  const validData = getValidData()
+
+  const albumsData: Array<IAlbumItem> = validData.map(item => {
+    const albumData = item.album
+
+    const albumDataObj: IAlbumItem = {
+      name: albumData.album_name,
+      composerName: albumData.album_composer,
+      albumId: albumData.id,
+      thumb: albumData.album_thumb,
+    }
+
+    return albumDataObj
+  })
+
+  console.log(albumsData)
+
+  return albumsData
 }
 
 const getAlbumDataWithId = (id: string) => {
@@ -63,6 +85,7 @@ const getDataOfRecentlyPlayed = () => {
 }
 
 export {
+  getAlbumsData,
   getAlbumDataWithId,
   getSongDataWithId,
   getDataOfMadeForYou,

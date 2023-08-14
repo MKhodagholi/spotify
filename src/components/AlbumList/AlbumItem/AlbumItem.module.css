@@ -1,0 +1,28 @@
+.album-item {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.album-item img {
+  width: 64px;
+}
+
+.album-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+}
+
+.album-info p {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.album-info span {
+  color: var(--color-gray-350);
+  font-size: 11px;
+  font-weight: 400;
+}
