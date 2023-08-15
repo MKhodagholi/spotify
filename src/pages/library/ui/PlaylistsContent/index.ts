@@ -6,7 +6,7 @@ const PlaylistsContent = () => {
   let artistContentElement = document.createElement('div')
 
   const playlistArray: Array<IPlayListItem> = [
-    { name: 'Likes', image: likeIcon, link: 'likes' },
+    { name: 'Likes', image: likeIcon, link: 'like' },
   ]
 
   artistContentElement.appendChild(PlayList(playlistArray))
