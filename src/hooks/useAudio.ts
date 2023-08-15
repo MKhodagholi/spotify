@@ -82,7 +82,7 @@ const useAudio = (data: {
   const musicListNumbers = musicList.length
 
   let isShuffle = false
-  let isPlay = true
+  let isPlay = false
   let isRepeat = false
 
   let currentSongIndex = 0
