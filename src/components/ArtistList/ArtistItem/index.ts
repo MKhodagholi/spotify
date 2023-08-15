@@ -15,7 +15,7 @@ const ArtistItem = (item: IArtistItem) => {
 
   artistElement.innerHTML = `<img src=${image} /><p>${name}</p>`
 
-  const validName = name.toLowerCase().split(' ').join('-')
+  const validName = name.split(' ').join('_')
 
   artistElement = Link(artistElement, `/artist/${validName}`)
 

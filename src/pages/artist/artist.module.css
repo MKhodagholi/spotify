@@ -58,7 +58,6 @@
 .song-item {
   display: flex;
   align-items: center;
-  width: fit-content;
   cursor: pointer;
 }
 
@@ -73,8 +72,11 @@
   margin-right: 12px;
 }
 
+.song-item div {
+  width: 70%;
+}
+
 .song-item p {
-  width: 90%;
   font-size: 14px;
   word-wrap: break-word;
 }

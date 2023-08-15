@@ -28,10 +28,7 @@ const createArtistSongElement = (
 }
 
 const ArtistPage = (artistName: string) => {
-  const validName = artistName
-    .split('-')
-    .map(word => word[0].toUpperCase() + word.slice(1))
-    .join(' ')
+  const validName = artistName.split('_').join(' ')
 
   const artistSongs = getSongDataWithArtistName(validName)
 
