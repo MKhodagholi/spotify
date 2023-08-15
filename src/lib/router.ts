@@ -4,6 +4,7 @@ import NotFoundPage from '../pages/not-found'
 import SongPage from '../pages/song'
 import { removeAllAudio } from '../lib/removeAllAudio'
 import LibraryPage from '../pages/library'
+import ArtistPage from '../pages/artist'
 
 const pageElement: HTMLDivElement = document.querySelector('#page')!
 
@@ -22,6 +23,14 @@ export function Router(): Array<HTMLElement> {
   const isAlbumPage = pathArray.length === 3 && pathArray[1] === 'album'
   const isSongPage = pathArray.length === 4 && pathArray[1] === 'album'
 
+  const isArtistPage = pathArray.length === 3 && pathArray[1] === 'artist'
+
+  const hideMenuHandlder = () => {
+    pageElement.classList.add('full')
+    menuElement.innerHTML = ''
+    menuElement.classList.remove('menu')
+  }
+
   removeAllAudio()
 
   let nodeArrays
@@ -36,16 +45,16 @@ export function Router(): Array<HTMLElement> {
   } else if (isAlbumPage) {
     const albumId = pathArray[2]
     nodeArrays = AlbumPage(albumId)
-    pageElement.classList.add('full')
-    menuElement.innerHTML = ''
-    menuElement.classList.remove('menu')
+    hideMenuHandlder()
   } else if (isSongPage) {
-    pageElement.classList.add('full')
-    menuElement.innerHTML = ''
-    menuElement.classList.remove('menu')
+    hideMenuHandlder()
     const albumId = pathArray[2]
     const songId = pathArray[3]
     nodeArrays = SongPage(albumId, songId)
+  } else if (isArtistPage) {
+    hideMenuHandlder()
+    const artistName = pathArray[2]
+    nodeArrays = ArtistPage(artistName)
   } else {
     nodeArrays = NotFoundPage()
   }

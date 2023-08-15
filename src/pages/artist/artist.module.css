@@ -1,0 +1,84 @@
+.artist-page {
+  background-color: var(--color-black-950);
+  min-height: 100lvh;
+  height: 100%;
+  padding-bottom: 3rem;
+}
+
+.image-artist-div {
+  position: relative;
+  height: 500px;
+}
+
+.image-artist-div img {
+  width: 100%;
+  position: relative;
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  z-index: 5;
+  height: 600px;
+  width: 100%;
+  background: linear-gradient(0deg, #00000055 0%, rgba(0, 0, 0, 0) 40%);
+}
+
+.image-artist-div h2 {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  margin-left: 15px;
+  font-size: 55px;
+  font-weight: 900;
+}
+
+.play-div {
+  display: flex;
+  justify-content: flex-end;
+  margin: 16px;
+}
+
+.list-music-div {
+  margin-left: 16px;
+}
+
+.list-music-div h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.song-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.song-item span {
+  display: inline-block;
+  min-width: 40px;
+  font-size: 12px;
+}
+
+.song-item img {
+  width: 48px;
+  margin-right: 12px;
+}
+
+.song-item p {
+  width: 90%;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.song-item p + span {
+  color: #b8b8b8;
+}

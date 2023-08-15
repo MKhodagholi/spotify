@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;700&display=swap');
 
 :root {
+  --color-black-950: #121212;
   --color-black-900: #1b1b1b;
   --color-black-700: #262626;
   --color-black-600: #282828;
@@ -42,10 +43,9 @@ img {
 #app {
   position: relative;
   width: 100%;
-  height: var(--size-height-full);
+  min-height: var(--size-height-full);
   max-width: 500px;
   margin: 0 auto;
-  padding-top: 2rem;
   background-color: var(--color-black-900);
   color: var(--color-white);
   overflow: hidden;
@@ -69,12 +69,11 @@ img {
   max-height: calc(100lvh - 80px);
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 80px;
 }
 
 .page.full {
-  max-height: 100lvh;
-  margin-bottom: 10px;
+  min-height: 100lvh;
+  max-height: none;
 }
 
 /* custom scroll */

@@ -49,7 +49,7 @@ const getDownloadLikeDivElement = (
   </div>
 </div>
 */
-const getPlayDivElement = (): [
+export const getPlayDivElement = (): [
   HTMLDivElement,
   HTMLImageElement,
   HTMLImageElement,

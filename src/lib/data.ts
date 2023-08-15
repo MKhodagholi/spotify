@@ -76,6 +76,20 @@ const getArtistsData = () => {
   return artistsData
 }
 
+const getSongDataWithArtistName = (artistName: string) => {
+  const artistAlbums = getValidData().filter(
+    item => item.album.album_composer === artistName,
+  )
+
+  if (artistAlbums.length <= 0) return []
+
+  const artistSongs = artistAlbums.map(album =>
+    album.musics.map(music => ({ ...music, albumId: album.album.id })),
+  )[0]
+
+  return artistSongs
+}
+
 const getAlbumDataWithId = (id: string) => {
   return getValidData().filter(item => item.album.id === id)[0]
 }
@@ -136,6 +150,7 @@ const getDataOfRecentlyPlayed = () => {
 export {
   getAlbumsData,
   getArtistsData,
+  getSongDataWithArtistName,
   getAlbumDataWithId,
   getSongDataWithId,
   getDataOfMadeForYou,

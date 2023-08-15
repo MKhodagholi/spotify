@@ -9,12 +9,15 @@ export interface IArtistItem {
 
 const ArtistItem = (item: IArtistItem) => {
   const { name, image } = item
+
   let artistElement = document.createElement('div')
   artistElement.classList.add(styles['artist-item'])
 
   artistElement.innerHTML = `<img src=${image} /><p>${name}</p>`
 
-  artistElement = Link(artistElement, `/artists/${name}`)
+  const validName = name.toLowerCase().split(' ').join('-')
+
+  artistElement = Link(artistElement, `/artist/${validName}`)
 
   return artistElement
 }

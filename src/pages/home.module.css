@@ -7,6 +7,7 @@
   row-gap: 20px;
   padding-right: 2rem;
   margin-left: var(--margin-left-page);
+  padding-top: 80px;
 }
 
 .playlist h3 {

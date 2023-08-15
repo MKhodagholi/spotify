@@ -1,5 +1,11 @@
 import { getMinuteAudio, getSecondAudio } from '../lib/audio'
 
+export interface AudioMusicList {
+  id: string
+  url: string
+  name: string
+}
+
 const getAudioFromIndexDB = (songId: string) => {
   const audio = undefined
 
@@ -18,12 +24,12 @@ function timeout(ms: number) {
 const setAudioSrc = async (
   trackObj: { id: string; url: string; name: string },
   audioElement: HTMLAudioElement,
-  trackTitleElement: HTMLElement,
   isPlay: boolean,
+  trackTitleElement?: HTMLElement,
   endTimeAudioElement?: HTMLElement,
   timerElement?: HTMLInputElement,
 ) => {
-  trackTitleElement.innerText = trackObj.name
+  if (trackTitleElement) trackTitleElement.innerText = trackObj.name
 
   await timeout(300)
 
@@ -55,8 +61,8 @@ const setAudioSrc = async (
 }
 
 const useAudio = (data: {
-  musicList: Array<{ id: string; url: string; name: string }>
-  trackTitleElement: any
+  musicList: Array<AudioMusicList>
+  trackTitleElement?: any
   playElement?: HTMLElement
   shuffleElement?: HTMLElement
   nextTrackElement?: HTMLElement

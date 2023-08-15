@@ -5,6 +5,7 @@
 .static-elements-div {
   position: sticky;
   top: 0;
+  padding-top: 80px;
   display: flex;
   flex-direction: column;
   padding-bottom: 20px;
