@@ -5,7 +5,7 @@ import SongPage from '../pages/song'
 import { removeAllAudio } from '../lib/removeAllAudio'
 import LibraryPage from '../pages/library'
 import ArtistPage from '../pages/artist'
-import LikePage from '../pages/like'
+import PlaylistPage from '../pages/playlist'
 
 const pageElement: HTMLDivElement = document.querySelector('#page')!
 
@@ -26,10 +26,7 @@ export function Router(): Array<HTMLElement> {
 
   const isArtistPage = pathArray.length === 3 && pathArray[1] === 'artist'
 
-  const isLikePage =
-    pathArray.length === 3 &&
-    pathArray[1] === 'playlist' &&
-    pathArray[2] === 'like'
+  const isPlaylistPage = pathArray.length === 3 && pathArray[1] === 'playlist'
 
   const hideMenuHandlder = () => {
     pageElement.classList.add('full')
@@ -61,8 +58,10 @@ export function Router(): Array<HTMLElement> {
     hideMenuHandlder()
     const artistName = pathArray[2]
     nodeArrays = ArtistPage(artistName)
-  } else if (isLikePage) {
-    nodeArrays = LikePage()
+  } else if (isPlaylistPage) {
+    hideMenuHandlder()
+    const playlistName = pathArray[2].split('_').join(' ')
+    nodeArrays = PlaylistPage(playlistName)
   } else {
     nodeArrays = NotFoundPage()
   }

@@ -94,6 +94,8 @@ const AlbumPage = (albumId: string) => {
     name: item.track_name,
   }))
 
+  console.log(musics)
+
   const downloadIconClickHandler = () => {}
   const likeIconClickHandler = () => {}
 
