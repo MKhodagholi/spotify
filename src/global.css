@@ -114,13 +114,17 @@ input[type='range']::-webkit-slider-thumb {
 
 input[type='range']::-moz-range-thumb {
   -webkit-appearance: none;
-  height: 16px;
-  width: 16px;
+  appearance: none;
+  width: 0;
+  height: 0;
+  outline: none;
+  border: none;
 }
 
 input[type='range'] {
   width: 100%;
   -webkit-appearance: none;
+  appearance: none;
   background: transparent;
   cursor: pointer;
 }

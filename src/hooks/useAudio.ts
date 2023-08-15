@@ -82,7 +82,7 @@ const useAudio = (data: {
   const musicListNumbers = musicList.length
 
   let isShuffle = false
-  let isPlay = false
+  let isPlay = true
   let isRepeat = false
 
   let currentSongIndex = 0
@@ -93,10 +93,13 @@ const useAudio = (data: {
   setAudioSrc(
     musicList[currentSongIndex],
     audioElement,
-    trackTitleElement,
     isPlay,
+    trackTitleElement,
     data?.endTimerElement,
+    data?.timerElement,
   )
+
+  if (data.onPlay) data.onPlay(isPlay)
 
   const playPauseClickHandler = () => {
     if (isPlay) {
@@ -121,9 +124,10 @@ const useAudio = (data: {
     setAudioSrc(
       musicList[nextSongIndex],
       audioElement,
-      trackTitleElement,
       isPlay,
+      trackTitleElement,
       data?.endTimerElement,
+      data?.timerElement,
     )
   }
 
@@ -137,9 +141,10 @@ const useAudio = (data: {
     setAudioSrc(
       musicList[previewSognIndex],
       audioElement,
-      trackTitleElement,
       isPlay,
+      trackTitleElement,
       data?.endTimerElement,
+      data?.timerElement,
     )
   }
 
@@ -171,9 +176,10 @@ const useAudio = (data: {
     setAudioSrc(
       musicList[nextSongIndex],
       audioElement,
-      trackTitleElement,
       isPlay,
+      trackTitleElement,
       data?.endTimerElement,
+      data?.timerElement,
     )
 
     audioElement.play()
@@ -209,9 +215,9 @@ const useAudio = (data: {
   }
 
   const timeChangeHandler = e => {
-    const value = e.target.value
+    const currentTime = e.target.value
 
-    audioElement.currentTime = value
+    audioElement.currentTime = currentTime
   }
 
   data?.playElement?.addEventListener('click', playPauseClickHandler)
