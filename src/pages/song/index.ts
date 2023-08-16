@@ -19,9 +19,12 @@ const SongPage = (albumId: string, songId: string) => {
   const { musics } = getAlbumDataWithId(albumId)
   const songList = musics.map(item => ({
     id: String(item.id),
+    albumId,
     url: item.track_url,
     name: item.track_name,
   }))
+
+  const songIndex = songList.findIndex(song => song.id === songId)
 
   const songPageElement = document.createElement('div')
   songPageElement.classList.add(styles['song-page'])
@@ -119,6 +122,7 @@ const SongPage = (albumId: string, songId: string) => {
 
   useAudio({
     musicList: songList,
+    startFrom: songIndex,
     trackTitleElement: songNameElement,
     playElement: pauseSongDivElement,
     shuffleElement,

@@ -34,6 +34,7 @@ const ArtistPage = (artistName: string) => {
 
   const musicList: Array<AudioMusicList> = artistSongs.map(song => ({
     id: String(song.id),
+    albumId: song.albumId,
     url: song.track_url,
     name: song.track_name,
   }))

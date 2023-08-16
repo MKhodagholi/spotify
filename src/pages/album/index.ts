@@ -90,11 +90,10 @@ const AlbumPage = (albumId: string) => {
 
   const songList = musics.map(item => ({
     id: String(item.id),
+    albumId,
     url: item.track_url,
     name: item.track_name,
   }))
-
-  console.log(musics)
 
   const downloadIconClickHandler = () => {}
   const likeIconClickHandler = () => {}

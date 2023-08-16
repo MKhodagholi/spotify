@@ -1,13 +1,21 @@
 import { getMinuteAudio, getSecondAudio } from '../lib/audio'
+import { getDataDownloadItem, saveSongDataInIndexDB } from '../lib/indexDB'
 
 export interface AudioMusicList {
   id: string
+  albumId: string
   url: string
   name: string
 }
 
-const getAudioFromIndexDB = (songId: string) => {
-  const audio = undefined
+const getAudioFromIndexDB = async (songId: string) => {
+  let audio = undefined
+  const data = await getDataDownloadItem(songId)
+
+  if (data) {
+    const blobUrl = URL.createObjectURL(data)
+    audio = blobUrl
+  }
 
   return audio
 }
@@ -22,7 +30,7 @@ function timeout(ms: number) {
 }
 
 const setAudioSrc = async (
-  trackObj: { id: string; url: string; name: string },
+  trackObj: { id: string; albumId: string; url: string; name: string },
   audioElement: HTMLAudioElement,
   isPlay: boolean,
   trackTitleElement?: HTMLElement,
@@ -33,12 +41,23 @@ const setAudioSrc = async (
 
   await timeout(300)
 
-  const savedAudio = getAudioFromIndexDB(trackObj.id)
+  const savedAudio = await getAudioFromIndexDB(trackObj.id)
 
   if (savedAudio) {
     audioElement.src = savedAudio
   } else {
     audioElement.src = trackObj.url
+    const res = await fetch(trackObj.url)
+
+    const blob = await res.blob()
+
+    const blobData = new Blob([blob])
+
+    saveSongDataInIndexDB({
+      id: trackObj.id,
+      albumId: trackObj.albumId,
+      data: blobData,
+    })
   }
 
   audioElement.onloadedmetadata = function () {
@@ -62,6 +81,7 @@ const setAudioSrc = async (
 
 const useAudio = (data: {
   musicList: Array<AudioMusicList>
+  startFrom?: number
   trackTitleElement?: any
   playElement?: HTMLElement
   shuffleElement?: HTMLElement
@@ -85,7 +105,7 @@ const useAudio = (data: {
   let isPlay = false
   let isRepeat = false
 
-  let currentSongIndex = 0
+  let currentSongIndex = data?.startFrom ?? 0
 
   const audioElement = document.createElement('audio')
   audioElement.style.display = 'none'
@@ -159,6 +179,8 @@ const useAudio = (data: {
   }
 
   const endedAudioHandler = () => {
+    audioElement.pause()
+
     let nextSongIndex
 
     if (isRepeat) nextSongIndex = currentSongIndex
@@ -181,8 +203,6 @@ const useAudio = (data: {
       data?.endTimerElement,
       data?.timerElement,
     )
-
-    audioElement.play()
   }
 
   const timeupdateAudioHandler = e => {
