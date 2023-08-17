@@ -10,6 +10,7 @@ import shuffleIcon from '../../assets/icons/shuffle_icon.svg'
 import MusicList from '../../components/MusicList'
 import { Track } from '../../class/Album'
 import useAudio from '../../hooks/useAudio'
+import { LikeService } from '../../lib/indexDB'
 
 /* 
 <div className=${styles['album-like-download']}>
@@ -22,7 +23,7 @@ const getDownloadLikeDivElement = (
   onLike: () => void,
   onDownload: () => void,
   likeActive: boolean,
-) => {
+): [HTMLDivElement, HTMLImageElement] => {
   const likeDowloadDivElement = document.createElement('div')
   likeDowloadDivElement.classList.add(styles['album-like-download'])
 
@@ -38,7 +39,7 @@ const getDownloadLikeDivElement = (
   likeDowloadDivElement.appendChild(likeIconElement)
   likeDowloadDivElement.appendChild(dowloadIconElement)
 
-  return likeDowloadDivElement
+  return [likeDowloadDivElement, likeIconElement]
 }
 
 /* 
@@ -79,7 +80,7 @@ export const getPlayDivElement = (): [
   return [playDivElement, playIconElement, suffleIconElement]
 }
 
-const AlbumPage = (albumId: string) => {
+const AlbumPage = async (albumId: string) => {
   const albumData = getAlbumDataWithId(albumId)
 
   const { album, musics } = albumData
@@ -96,7 +97,24 @@ const AlbumPage = (albumId: string) => {
   }))
 
   const downloadIconClickHandler = () => {}
-  const likeIconClickHandler = () => {}
+
+  let isLiked = !!(await LikeService.getDataLikeItem(album.id))
+
+  const likeIconClickHandler = async () => {
+    if (isLiked) {
+      likeElemnet.src = likeIcon
+      await LikeService.removeLikesItem(album.id)
+    } else {
+      likeElemnet.src = likeActiveIcon
+      await LikeService.saveLikeDataInIndexDB({
+        name: album.album_name,
+        id: album.id,
+        image: album.album_thumb,
+        composerName: album.album_composer,
+      })
+    }
+    isLiked = !isLiked
+  }
 
   albumPageElement.innerHTML = `<div class=${styles['album-page-content']}>
   <div class=${styles['thumb-img']}>
@@ -117,10 +135,10 @@ const AlbumPage = (albumId: string) => {
   const albumActionsDivElement = document.createElement('div')
   albumActionsDivElement.classList.add(styles['album-actions-div'])
 
-  const downloadLikeElement = getDownloadLikeDivElement(
-    downloadIconClickHandler,
+  const [downloadLikeElement, likeElemnet] = getDownloadLikeDivElement(
     likeIconClickHandler,
-    true,
+    downloadIconClickHandler,
+    isLiked,
   )
 
   albumActionsDivElement.appendChild(downloadLikeElement)
@@ -162,10 +180,11 @@ const AlbumPage = (albumId: string) => {
     time: item.track_time,
     url: item.track_url,
     thumb: item.track_thumb,
+    albumId: album.id,
     composerName: album.album_composer,
   }))
 
-  const musicList = MusicList(musicArray)
+  const musicList = await MusicList(musicArray)
 
   musicList.forEach(item => musicListElement.appendChild(item))
 

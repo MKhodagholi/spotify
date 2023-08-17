@@ -3,6 +3,7 @@ import styles from './Album.module.css'
 
 export interface Track {
   id: string
+  albumId: string
   name: string
   time: string
   url: string

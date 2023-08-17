@@ -16,7 +16,7 @@ export const navigate = (to: string) => {
   window.dispatchEvent(new Event('locationchange'))
 }
 
-export function Router(): Array<HTMLElement> {
+export async function Router(): Promise<Array<HTMLElement>> {
   const path = window.location.pathname
 
   const pathArray = path.split('/', 4)
@@ -47,13 +47,13 @@ export function Router(): Array<HTMLElement> {
     nodeArrays = LibraryPage()
   } else if (isAlbumPage) {
     const albumId = pathArray[2]
-    nodeArrays = AlbumPage(albumId)
+    nodeArrays = await AlbumPage(albumId)
     hideMenuHandlder()
   } else if (isSongPage) {
     hideMenuHandlder()
     const albumId = pathArray[2]
     const songId = pathArray[3]
-    nodeArrays = SongPage(albumId, songId)
+    nodeArrays = await SongPage(albumId, songId)
   } else if (isArtistPage) {
     hideMenuHandlder()
     const artistName = pathArray[2]
@@ -61,11 +61,11 @@ export function Router(): Array<HTMLElement> {
   } else if (isPlaylistPage) {
     hideMenuHandlder()
     const playlistName = pathArray[2].split('_').join(' ')
-    nodeArrays = PlaylistPage(playlistName)
+    nodeArrays = await PlaylistPage(playlistName)
   } else {
     nodeArrays = NotFoundPage()
   }
 
   if (nodeArrays instanceof HTMLElement) return [nodeArrays]
-  else return nodeArrays
+  else return nodeArrays as HTMLElement[]
 }

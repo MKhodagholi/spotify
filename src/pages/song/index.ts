@@ -5,6 +5,7 @@ import styles from './song.module.css'
 import useAudio from '../../hooks/useAudio'
 
 import likeIcon from '../../assets/icons/like_icon.svg'
+import likeActiveIcon from '../../assets/icons/like-active_icon.svg'
 
 import previewSongIcon from '../../assets/icons/preview-song_icon.svg'
 import pauseIcon from '../../assets/icons/pause-black_icon.svg'
@@ -13,16 +14,56 @@ import repeatIcon from '../../assets/icons/repeat-song_icon.svg'
 import repeatActiveIcon from '../../assets/icons/repeat-active_icon.svg'
 import shuffleIcon from '../../assets/icons/shuffle-big_icon.svg'
 import shuffleActiveIcon from '../../assets/icons/shuffle-big-active_icon.svg'
+import { LikeService } from '../../lib/indexDB'
 
-const SongPage = (albumId: string, songId: string) => {
+const SongPage = async (albumId: string, songId: string) => {
   const song = getSongDataWithId(albumId, songId)
-  const { musics } = getAlbumDataWithId(albumId)
+  const { musics, album } = getAlbumDataWithId(albumId)
+
   const songList = musics.map(item => ({
     id: String(item.id),
     albumId,
     url: item.track_url,
     name: item.track_name,
   }))
+
+  let currentSongId = songId
+
+  let isLike: boolean = !!(await LikeService.getDataLikeItem(currentSongId))
+
+  const setCurrentSongId = async (songId: string) => {
+    currentSongId = songId
+
+    isLike = !!(await LikeService.getDataLikeItem(currentSongId))
+
+    if (isLike) {
+      likeSongElement.src = likeActiveIcon
+    } else {
+      likeSongElement.src = likeIcon
+    }
+  }
+
+  const likeClickHandler = async () => {
+    console.log(isLike)
+    if (isLike) {
+      await LikeService.removeLikesItem(songId)
+      likeSongElement.src = likeIcon
+    } else {
+      const songItem = musics.find(music => +music.id === +currentSongId)!
+      await LikeService.saveLikeDataInIndexDB({
+        id: currentSongId,
+        albumId,
+        url: songItem.track_url,
+        image: songItem.track_thumb,
+        name: songItem.track_name,
+        composerName: album.album_composer,
+      })
+
+      likeSongElement.src = likeActiveIcon
+    }
+
+    isLike = !isLike
+  }
 
   const songIndex = songList.findIndex(song => song.id === songId)
 
@@ -44,7 +85,16 @@ const SongPage = (albumId: string, songId: string) => {
   songInfoElement.appendChild(songNameElement)
 
   const likeSongElement = document.createElement('img')
-  likeSongElement.src = likeIcon
+
+  if (isLike) {
+    likeSongElement.src = likeActiveIcon
+  } else {
+    likeSongElement.src = likeIcon
+  }
+
+  likeSongElement.style.cursor = 'pointer'
+
+  likeSongElement.addEventListener('click', likeClickHandler)
 
   songInfoElement.appendChild(likeSongElement)
 
@@ -123,6 +173,7 @@ const SongPage = (albumId: string, songId: string) => {
   useAudio({
     musicList: songList,
     startFrom: songIndex,
+    setCurrentSongId,
     trackTitleElement: songNameElement,
     playElement: pauseSongDivElement,
     shuffleElement,

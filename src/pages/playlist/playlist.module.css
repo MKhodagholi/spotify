@@ -1,6 +1,7 @@
 .playlist-page {
   background-color: #121212;
   min-height: 100lvh;
+  padding-bottom: 30px;
 }
 
 .light-blob {

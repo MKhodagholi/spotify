@@ -1,8 +1,12 @@
-// import { getPlaylistItemWithName } from '../../lib/indexDB'
 import styles from './playlist.module.css'
-import PlayListItem, { IPlaylistItem } from './ui/playlistItem'
+import PlayListItem, {
+  IPlaylistAlbumItem,
+  IPlaylistItem,
+} from './ui/playlistItem'
 
-const PlaylistPage = (name: string) => {
+import { LikeService } from '../../lib/indexDB'
+
+const PlaylistPage = async (name: string) => {
   const playlistPageElement = document.createElement('div')
   playlistPageElement.classList.add(styles['playlist-page'])
 
@@ -12,18 +16,28 @@ const PlaylistPage = (name: string) => {
     <button>SHUFFLE PLAY</button></div>
   `
 
-  // const playlistItems = getPlaylistItemWithName(name)
-  const playlistItems: Array<IPlaylistItem> = [
-    {
-      name: 'By the Sea',
-      songId: '114760',
-      url: 'https://dl.vmusic.ir/2022/02/Frozen Silence - Emotion (2022)/128k/01) Frozen Silence - By the Sea.mp3',
-      albumId: '24',
-      image:
-        'https://vmusic.ir/wp-content/uploads/2022/02/Frozen-Silence-Emotion-2022-225x225.jpg',
-      composerName: 'adsfsd',
-    },
-  ]
+  const likesItems = await LikeService.getLikesitems()
+
+  const playlistItems: Array<IPlaylistItem | IPlaylistAlbumItem> =
+    likesItems.map(item => {
+      if ('url' in item) {
+        return {
+          image: item.image,
+          name: item.name,
+          composerName: item.composerName,
+          albumId: item.albumId,
+          id: item.id,
+          url: item.url,
+        }
+      } else {
+        return {
+          image: item.image,
+          name: item.name,
+          composerName: item.composerName,
+          id: item.id,
+        }
+      }
+    })
 
   const plaulistListElement = document.createElement('div')
   plaulistListElement.classList.add(styles['playlist-list'])

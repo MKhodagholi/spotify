@@ -1,5 +1,5 @@
 import { getMinuteAudio, getSecondAudio } from '../lib/audio'
-import { getDataDownloadItem, saveSongDataInIndexDB } from '../lib/indexDB'
+import { DownloadService } from '../lib/indexDB'
 
 export interface AudioMusicList {
   id: string
@@ -10,7 +10,7 @@ export interface AudioMusicList {
 
 const getAudioFromIndexDB = async (songId: string) => {
   let audio = undefined
-  const data = await getDataDownloadItem(songId)
+  const data = await DownloadService.getDataDownloadItem(songId)
 
   if (data) {
     const blobUrl = URL.createObjectURL(data)
@@ -53,8 +53,9 @@ const setAudioSrc = async (
 
     const blobData = new Blob([blob])
 
-    saveSongDataInIndexDB({
+    DownloadService.saveSongDataInIndexDB({
       id: trackObj.id,
+      name: trackObj.name,
       albumId: trackObj.albumId,
       data: blobData,
     })
@@ -82,6 +83,7 @@ const setAudioSrc = async (
 const useAudio = (data: {
   musicList: Array<AudioMusicList>
   startFrom?: number
+  setCurrentSongId?: (songId: string) => void
   trackTitleElement?: any
   playElement?: HTMLElement
   shuffleElement?: HTMLElement
@@ -141,6 +143,11 @@ const useAudio = (data: {
 
     currentSongIndex = nextSongIndex % (musicListNumbers - 1)
 
+    if (data?.setCurrentSongId) {
+      const currentSongId = musicList[currentSongIndex].id
+      data.setCurrentSongId(currentSongId)
+    }
+
     setAudioSrc(
       musicList[nextSongIndex],
       audioElement,
@@ -157,6 +164,11 @@ const useAudio = (data: {
     if (previewSognIndex < 0) previewSognIndex += musicListNumbers - 1
 
     currentSongIndex = previewSognIndex
+
+    if (data?.setCurrentSongId) {
+      const currentSongId = musicList[currentSongIndex].id
+      data.setCurrentSongId(currentSongId)
+    }
 
     setAudioSrc(
       musicList[previewSognIndex],
@@ -195,6 +207,12 @@ const useAudio = (data: {
     }
 
     currentSongIndex = nextSongIndex
+
+    if (data?.setCurrentSongId) {
+      const currentSongId = musicList[currentSongIndex].id
+      data.setCurrentSongId(currentSongId)
+    }
+
     setAudioSrc(
       musicList[nextSongIndex],
       audioElement,

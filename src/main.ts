@@ -1,14 +1,14 @@
 import './global.css'
 import Menu from './components/Menu'
 import { Router } from './lib/router'
-import { initialSongObjInIndexDB } from './lib/indexDB'
+import { initialObjStoreInIndexDB } from './lib/indexDB'
 
 const pageElement: HTMLDivElement = document.querySelector('#page')!
 
-const renderPage = () => {
+const renderPage = async () => {
   pageElement.innerHTML = ''
   Menu()
-  const nodePages = Router()
+  const nodePages = await Router()
 
   nodePages.map(node => pageElement.appendChild(node))
 }
@@ -17,10 +17,10 @@ window.addEventListener('locationchange', renderPage)
 
 window.addEventListener('popstate', renderPage)
 
-const initialApp = () => {
-  initialSongObjInIndexDB()
+const initialApp = async () => {
+  initialObjStoreInIndexDB()
   Menu()
-  renderPage()
+  await renderPage()
 }
 
 initialApp()
