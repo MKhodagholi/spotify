@@ -10,6 +10,26 @@ import artist4Image from '../assets/images/artist-4_image.svg'
 import artist5Image from '../assets/images/artist-5_image.svg'
 import artist6Image from '../assets/images/artist-6_image.svg'
 
+interface InputDataMusics {
+  id: any
+  track_name: any
+  track_time: any
+  track_url: any
+  track_thumb: any
+  is_favorited: any
+  like_status: any
+  nonce: any
+}
+
+interface InputDataAlbum {
+  id: any
+  album_name: any
+  album_composer: any
+  album_genre: any
+  album_thumb: any
+  album_url: any
+}
+
 const getValidData = () => {
   return data.filter(item => !!item.album.album_name)
 }
@@ -90,7 +110,13 @@ const getSongDataWithArtistName = (artistName: string) => {
   return artistSongs
 }
 
-const getAlbumDataWithId = (id: string) => {
+const getAlbumDataWithId = (
+  id: string,
+): {
+  album: InputDataAlbum
+  musics: Array<InputDataMusics>
+  length: number
+} => {
   return getValidData().filter(item => item.album.id === id)[0]
 }
 

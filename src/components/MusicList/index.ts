@@ -34,7 +34,7 @@ export const TrackItem = async (track: Track) => {
 
     isDownloadingElement.innerText = ''
 
-    download(blobMp3, track.name)
+    download({ blob: blobMp3, fileName: track.name })
   }
 
   const trackItemElement = document.createElement('div')

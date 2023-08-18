@@ -88,7 +88,7 @@ function getDataDownloadItem(itemId: string) {
       resolve(itemResult?.data)
     }
 
-    tx.onerror = e => {
+    tx.onerror = () => {
       reject()
     }
   })

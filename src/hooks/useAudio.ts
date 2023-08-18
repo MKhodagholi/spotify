@@ -9,7 +9,7 @@ export interface AudioMusicList {
 }
 
 const getAudioFromIndexDB = async (songId: string) => {
-  let audio = undefined
+  let audio: undefined | string = undefined
   const data = await DownloadService.getDataDownloadItem(songId)
 
   if (data) {
