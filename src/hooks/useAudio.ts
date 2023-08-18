@@ -223,7 +223,7 @@ const useAudio = (data: {
     )
   }
 
-  const timeupdateAudioHandler = e => {
+  const timeupdateAudioHandler = (e: any) => {
     const audio = e.target
     const currentTime = audio.currentTime
 
@@ -252,7 +252,7 @@ const useAudio = (data: {
     }
   }
 
-  const timeChangeHandler = e => {
+  const timeChangeHandler = (e: any) => {
     const currentTime = e.target.value
 
     audioElement.currentTime = currentTime

@@ -21,10 +21,20 @@ interface LikeAlbumItem {
   image: string
 }
 
+const createDBIfNotExist = () => {
+  if (!db) {
+    const requset = indexedDB.open('songs', 5)
+
+    requset.onsuccess = () => {
+      db = requset.result
+    }
+  }
+}
+
 let db: IDBDatabase
 
 const initialObjStoreInIndexDB = () => {
-  const request = indexedDB.open('songs', 4)
+  const request = indexedDB.open('songs', 5)
 
   request.onsuccess = () => {
     db = request.result
@@ -47,6 +57,7 @@ const initialObjStoreInIndexDB = () => {
 
 function addDownloadsItem(item: SongItem) {
   new Promise<void>((resolve, reject) => {
+    createDBIfNotExist()
     const tx = db.transaction('downloads', 'readwrite')
     const store = tx.objectStore('downloads')
 
@@ -64,6 +75,8 @@ function addDownloadsItem(item: SongItem) {
 
 function getDataDownloadItem(itemId: string) {
   return new Promise<Blob>((resolve, reject) => {
+    createDBIfNotExist()
+
     const tx = db.transaction('downloads', 'readonly')
 
     const store = tx.objectStore('downloads')
@@ -87,6 +100,8 @@ const saveSongDataInIndexDB = (songObj: SongItem) => {
 
 const addLikesItem = (item: LikeItem | LikeAlbumItem) => {
   return new Promise<void>((resolve, reject) => {
+    createDBIfNotExist()
+
     const tx = db.transaction('likes', 'readwrite')
 
     const store = tx.objectStore('likes')
@@ -105,6 +120,8 @@ const addLikesItem = (item: LikeItem | LikeAlbumItem) => {
 
 const removeLikesItem = (itemId: string) => {
   return new Promise<void>((resolve, reject) => {
+    createDBIfNotExist()
+
     const tx = db.transaction('likes', 'readwrite')
 
     const store = tx.objectStore('likes')
@@ -123,6 +140,8 @@ const removeLikesItem = (itemId: string) => {
 
 const getDataLikeItem = (itemId: string) => {
   return new Promise<LikeItem | LikeAlbumItem>((resolve, reject) => {
+    createDBIfNotExist()
+
     const tx = db.transaction('likes', 'readonly')
 
     const store = tx.objectStore('likes')
@@ -147,20 +166,24 @@ const saveLikeDataInIndexDB = async (likeItem: LikeItem | LikeAlbumItem) => {
 
 const getLikesitems = () => {
   return new Promise<Array<LikeItem | LikeAlbumItem>>((resolve, reject) => {
-    const tx = db.transaction('likes', 'readonly')
+    createDBIfNotExist()
 
-    const store = tx.objectStore('likes')
+    if (db) {
+      const tx = db.transaction('likes', 'readonly')
 
-    const item = store.getAll()
+      const store = tx.objectStore('likes')
 
-    tx.oncomplete = () => {
-      const itemResult = item.result
+      const item = store.getAll()
 
-      resolve(itemResult)
-    }
+      tx.oncomplete = () => {
+        const itemResult = item.result
 
-    tx.onerror = () => {
-      reject()
+        resolve(itemResult)
+      }
+
+      tx.onerror = () => {
+        reject()
+      }
     }
   })
 }
