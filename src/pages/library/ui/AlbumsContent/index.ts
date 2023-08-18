@@ -2,11 +2,16 @@ import AlbumList from '../../../../components/AlbumList'
 import { IAlbumItem } from '../../../../components/AlbumList/AlbumItem'
 
 import { getAlbumsData } from '../../../../lib/data'
+import SearchService from '../../../../lib/search'
 
-const AlbumsContent = () => {
+const AlbumsContent = (albumName?: string) => {
   let albumsContentElement = document.createElement('div')
 
-  const albumsArray: Array<IAlbumItem> = getAlbumsData()
+  let albumsArray: Array<IAlbumItem> = getAlbumsData()
+
+  if (albumName) {
+    albumsArray = SearchService.album(albumName)
+  }
 
   albumsContentElement.appendChild(AlbumList(albumsArray))
 

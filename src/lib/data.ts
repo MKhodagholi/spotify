@@ -120,6 +120,7 @@ const getDataOfMadeForYou = () => {
         name: track_name,
         thumb: track_thumb,
         time: track_time,
+        albumId: albumObj.album.id,
         url: track_url,
         composerName: album_composer,
       }
@@ -148,6 +149,7 @@ const getDataOfRecentlyPlayed = () => {
 }
 
 export {
+  getValidData,
   getAlbumsData,
   getArtistsData,
   getSongDataWithArtistName,

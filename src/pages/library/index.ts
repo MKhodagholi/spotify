@@ -27,9 +27,28 @@ const renderLibraryPageContent = (
   }
 }
 
+const searchHandler = (
+  searchInput: string,
+  tabName: string,
+  contentElement: HTMLElement,
+) => {
+  contentElement.innerHTML = ''
+  if (tabName === TAB_NAMES.PLAYLISTS) {
+    contentElement.appendChild(PlaylistsContent())
+  } else if (tabName === TAB_NAMES.ARTISTS) {
+    contentElement.appendChild(ArtistsContent(searchInput))
+  } else if (tabName === TAB_NAMES.ALBUMS) {
+    contentElement.appendChild(AlbumsContent(searchInput))
+  } else {
+    throw new Error('Invalid tab name.')
+  }
+}
+
 const LibraryPage = () => {
   const libraryPageElement = document.createElement('div')
   libraryPageElement.classList.add(styles['library-page'])
+
+  let currentTabName = ''
 
   const staticDivElement = document.createElement('div')
   staticDivElement.classList.add(styles['static-elements-div'])
@@ -49,7 +68,21 @@ const LibraryPage = () => {
   const searchElement = document.createElement('div')
   searchElement.classList.add(styles['search-div'])
 
-  searchElement.innerHTML = `<img src=${searchIcon} /><input placeholder="Find in playlists" id="search" />`
+  const serachImageElement = document.createElement('img')
+  serachImageElement.src = searchIcon
+  const searchInputElement: HTMLInputElement = document.createElement('input')
+
+  searchInputElement.placeholder = 'Find in playlists'
+  searchInputElement.id = 'search'
+
+  searchInputElement.addEventListener('input', (e: any) => {
+    const value = e?.target?.value as string
+
+    searchHandler(value, currentTabName, libraryContentElement)
+  })
+
+  searchElement.appendChild(serachImageElement)
+  searchElement.appendChild(searchInputElement)
 
   const filterElement = document.createElement('div')
   filterElement.classList.add(styles.filter)
@@ -77,6 +110,7 @@ const LibraryPage = () => {
 
   for (const child of tabsElement.children) {
     child.addEventListener('click', () => {
+      currentTabName = child.textContent?.toLowerCase()!
       libraryTabClickHandler(child as HTMLElement)
     })
   }
