@@ -6,6 +6,7 @@ import { removeAllAudio } from '../lib/removeAllAudio'
 import LibraryPage from '../pages/library'
 import ArtistPage from '../pages/artist'
 import PlaylistPage from '../pages/playlist'
+import SearchPage from '../pages/search'
 
 const pageElement: HTMLDivElement = document.querySelector('#page')!
 
@@ -28,6 +29,8 @@ export async function Router(): Promise<Array<HTMLElement>> {
 
   const isPlaylistPage = pathArray.length === 3 && pathArray[1] === 'playlist'
 
+  const isSearchPage = pathArray.length === 2 && pathArray[1] === 'search'
+
   const hideMenuHandlder = () => {
     pageElement.classList.add('full')
     menuElement.innerHTML = ''
@@ -45,6 +48,9 @@ export async function Router(): Promise<Array<HTMLElement>> {
     nodeArrays = HomePage()
   } else if (path === '/library') {
     nodeArrays = LibraryPage()
+  } else if (isSearchPage) {
+    nodeArrays = SearchPage()
+    hideMenuHandlder()
   } else if (isAlbumPage) {
     const albumId = pathArray[2]
     nodeArrays = await AlbumPage(albumId)

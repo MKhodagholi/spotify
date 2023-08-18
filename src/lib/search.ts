@@ -20,15 +20,13 @@ const searchAlbum = (albumName: string) => {
   })
 }
 
-interface Song {
-  id: number
-  track_name: string
-  track_time: string
-  track_url: string
-  track_thumb: string
-  is_favorited: number
-  like_status: string
-  nonce: string
+export interface Song {
+  id: string
+  albumId: string
+  name: string
+  url: string
+  thumb: string
+  composerName: string
 }
 
 const searchSong = (songName: string) => {
@@ -36,15 +34,20 @@ const searchSong = (songName: string) => {
 
   const arrayResult: Array<Song> = []
 
-  albumsData.forEach(({ musics }) =>
-    (musics as Array<Song>).forEach(music => {
-      if (music.track_name.includes(songName)) {
-        arrayResult.push(music)
+  albumsData.forEach(({ album, musics }) =>
+    musics.forEach(music => {
+      if (music.track_name.toLocaleLowerCase().includes(songName)) {
+        arrayResult.push({
+          id: String(music.id),
+          albumId: album.id,
+          name: music.track_name,
+          url: music.track_url,
+          thumb: music.track_thumb,
+          composerName: album.album_composer,
+        })
       }
     }),
   )
-
-  console.log(arrayResult)
 
   return arrayResult
 }
